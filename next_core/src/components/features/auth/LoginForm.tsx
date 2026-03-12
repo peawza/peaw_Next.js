@@ -37,7 +37,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
       const result = await signIn("credentials", {
         username: formData.email,
         password: formData.password,
-        languageCode: formData.languageCode ?? "en",
+        device: "web",
         redirect: false,
       });
 
@@ -58,7 +58,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
   return (
     <form className="space-y-4 rounded-lg border border-slate-200 bg-white p-6" onSubmit={handleSubmit}>
       <InputField
-        label="Username / Email"
+        label="Username"
         type="text"
         value={formData.email}
         onChange={(event) =>

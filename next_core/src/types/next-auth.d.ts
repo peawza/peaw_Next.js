@@ -12,6 +12,8 @@ declare module "next-auth" {
     permissionScreen?: string;
     timeout?: number;
     userNumber?: number;
+    accessTokenExpiresAt?: number;
+    authError?: string;
   }
 
   interface User {
@@ -40,5 +42,7 @@ declare module "next-auth/jwt" {
     permissionScreen?: string;
     timeout?: number;
     userNumber?: number;
+    accessTokenExpiresAt?: number;
+    authError?: string;
   }
 }

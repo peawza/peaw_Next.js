@@ -8,7 +8,7 @@ export default async function LoginPage() {
   const accessToken = session?.accessToken;
 
   if (accessToken && !isAccessTokenExpired(accessToken)) {
-    redirect("/dashboard");
+    redirect("/");
   }
 
   return (
