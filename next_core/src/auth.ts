@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import type { JWT } from "next-auth/jwt";
 import type { BackendLoginResponse } from "@/types";
 import { getJwtExp, isAccessTokenExpired } from "@/lib/authToken";
+import { APIPostWithToken } from "@/lib/apiClient";
 
 type LoginResponseEnvelope = {
   data?: BackendLoginResponse;
@@ -16,6 +17,22 @@ type RefreshTokenResponse = {
   RefreshToken: string;
   Timeout: number;
 };
+
+function normalizeLanguageCode(value: unknown): "th" | "en" | null {
+  if (typeof value !== "string" || value.trim() === "") {
+    return null;
+  }
+
+  const normalized = value.trim().toLowerCase();
+  if (normalized === "th" || normalized === "lc") {
+    return "th";
+  }
+  if (normalized === "en") {
+    return "en";
+  }
+
+  return null;
+}
 
 function asString(input: unknown): string | null {
   if (typeof input === "string" && input.trim() !== "") {
@@ -80,18 +97,21 @@ function toBackendLoginResponse(input: unknown): BackendLoginResponse | null {
 
   const candidate = input as Record<string, unknown>;
 
-  const id = asString(candidate.Id ?? candidate.id ?? candidate.UserId ?? candidate.userId);
+  const mappedUserName =
+    asString(candidate.UserName ?? candidate.userName ?? candidate.Username ?? candidate.username) ??
+    "";
+  const id =
+    asString(candidate.Id ?? candidate.id ?? candidate.UserId ?? candidate.userId) ||
+    mappedUserName;
   const token = asString(candidate.Token ?? candidate.token ?? candidate.AccessToken);
   const refreshToken =
     asString(candidate.RefreshToken ?? candidate.refreshToken ?? candidate.Refresh) ?? "";
-  const userName =
-    asString(candidate.UserName ?? candidate.userName ?? candidate.Username ?? candidate.username) ??
-    "";
+  const userName = mappedUserName;
   const languageCode =
     asString(candidate.LanguageCode ?? candidate.languageCode ?? candidate.Language) ?? "en";
   const displayName = asString(candidate.DisplayName ?? candidate.displayName) ?? userName;
 
-  if (!id || !token) {
+  if (!token) {
     return null;
   }
 
@@ -142,6 +162,31 @@ function getLoginPayload(input: unknown, depth = 0): BackendLoginResponse | null
   }
 
   return null;
+}
+
+function mapLoginPayloadToAuthUser(loginPayload: BackendLoginResponse, fallbackUserName?: string) {
+  const userName = loginPayload.UserName || fallbackUserName || "";
+  const displayName = loginPayload.DisplayName || userName;
+  const id = loginPayload.Id || userName;
+
+  if (!userName || !id) {
+    return null;
+  }
+
+  return {
+    id,
+    name: displayName,
+    email: userName,
+    userName,
+    displayName,
+    languageCode: loginPayload.LanguageCode || "en",
+    accessToken: loginPayload.Token,
+    refreshToken: loginPayload.RefreshToken,
+    customerId: loginPayload.CustomerID,
+    permissionScreen: loginPayload.PermissionScreen,
+    timeout: loginPayload.Timeout,
+    userNumber: loginPayload.UserNumber,
+  };
 }
 
 function getRefreshTokenPayload(input: unknown, depth = 0): RefreshTokenResponse | null {
@@ -196,11 +241,11 @@ function buildApiEndpoint(path: string | undefined, fallbackPath: string): strin
 }
 
 function buildLoginEndpoint(): string | null {
-  return buildApiEndpoint(process.env.AUTH_LOGIN_PATH, "/auth/login");
+  return buildApiEndpoint(process.env.AUTH_LOGIN_PATH, "/SSS010/Login");
 }
 
 function buildRefreshEndpoint(): string | null {
-  return buildApiEndpoint(process.env.AUTH_REFRESH_PATH, "/api/auth/SSS010/FirstLogin");
+  return buildApiEndpoint(process.env.AUTH_REFRESH_PATH, "/SSS010/RefreshToken");
 }
 
 function getTokenRefreshError(token: JWT): JWT {
@@ -212,45 +257,32 @@ function getTokenRefreshError(token: JWT): JWT {
   };
 }
 
-async function refreshAccessToken(token: JWT): Promise<JWT> {
+async function refreshAccessToken(token: JWT, preferredLanguageCode?: string): Promise<JWT> {
   const refreshEndpoint = buildRefreshEndpoint();
   const userName = asString(token.userName);
   const refreshToken = asString(token.refreshToken);
-  const languageCode = asString(token.languageCode) ?? "en";
+  const accessToken = asString(token.accessToken);
+  const languageCode =
+    normalizeLanguageCode(preferredLanguageCode) ??
+    normalizeLanguageCode(token.languageCode) ??
+    "en";
 
   if (!refreshEndpoint || !userName || !refreshToken) {
     return getTokenRefreshError(token);
   }
 
   try {
-    const response = await fetch(refreshEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        UserName: userName,
-        RefreshToken: refreshToken,
-        LanguageCode: languageCode,
-      }),
-      cache: "no-store",
-    });
+    const requestBody = {
+      UserName: userName,
+      RefreshToken: refreshToken,
+      LanguageCode: languageCode,
+    };
 
-    const responseText = await response.text();
-    const responseBody = parseJsonOrNull(responseText);
-
-    if (!response.ok) {
-      const responsePreview =
-        responseText.length > 500 ? `${responseText.slice(0, 500)}...` : responseText;
-
-      console.error("[auth][refresh] Refresh API failed", {
-        endpoint: refreshEndpoint,
-        status: response.status,
-        statusText: response.statusText,
-        body: responsePreview,
-      });
-      return getTokenRefreshError(token);
-    }
+    const responseBody = await APIPostWithToken<unknown>(
+      refreshEndpoint,
+      requestBody,
+      accessToken ?? undefined,
+    );
 
     const refreshPayload = getRefreshTokenPayload(responseBody);
     if (!refreshPayload) {
@@ -265,6 +297,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
       ...token,
       accessToken: refreshPayload.Token,
       refreshToken: refreshPayload.RefreshToken,
+      languageCode,
       timeout: refreshPayload.Timeout || token.timeout,
       accessTokenExpiresAt: getJwtExp(refreshPayload.Token) ?? token.accessTokenExpiresAt,
       authError: undefined,
@@ -272,6 +305,11 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
   } catch (error) {
     console.error("[auth][refresh] Refresh API exception", {
       endpoint: refreshEndpoint,
+      requestBody: {
+        UserName: userName,
+        RefreshToken: `${refreshToken.substring(0, 20)}...`,
+        LanguageCode: languageCode,
+      },
       error,
     });
     return getTokenRefreshError(token);
@@ -289,15 +327,33 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Credentials({
       name: "Credentials",
       credentials: {
+        mode: { label: "Mode", type: "text" },
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
         device: { label: "Device", type: "text" },
+        loginPayload: { label: "Login Payload", type: "text" },
       },
       authorize: async (credentials) => {
+        const mode = credentials?.mode?.toString().trim() || "password";
         const username = credentials?.username?.toString().trim();
         const password = credentials?.password?.toString();
         const device = credentials?.device?.toString() || "web";
         const loginEndpoint = buildLoginEndpoint();
+
+        if (mode === "direct") {
+          const rawDirectPayload = credentials?.loginPayload?.toString() ?? "";
+          const parsedDirectPayload = parseJsonOrNull(rawDirectPayload);
+          const loginPayload = getLoginPayload(parsedDirectPayload);
+
+          if (!loginPayload) {
+            console.error("[auth][credentials] Cannot map direct login payload", {
+              body: parsedDirectPayload,
+            });
+            return null;
+          }
+
+          return mapLoginPayloadToAuthUser(loginPayload, username);
+        }
 
         if (!username || !password || !loginEndpoint) {
           return null;
@@ -343,20 +399,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return null;
           }
 
-          return {
-            id: loginPayload.Id,
-            name: loginPayload.DisplayName,
-            email: loginPayload.UserName,
-            userName: loginPayload.UserName,
-            displayName: loginPayload.DisplayName,
-            languageCode: loginPayload.LanguageCode,
-            accessToken: loginPayload.Token,
-            refreshToken: loginPayload.RefreshToken,
-            customerId: loginPayload.CustomerID,
-            permissionScreen: loginPayload.PermissionScreen,
-            timeout: loginPayload.Timeout,
-            userNumber: loginPayload.UserNumber,
-          };
+          return mapLoginPayloadToAuthUser(loginPayload, username);
         } catch {
           return null;
         }
@@ -364,7 +407,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -382,6 +425,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           typeof user.accessToken === "string" ? (getJwtExp(user.accessToken) ?? undefined) : undefined;
         token.authError = undefined;
         return token;
+      }
+
+      const requestedLanguageCode =
+        trigger === "update"
+          ? normalizeLanguageCode((session as { languageCode?: unknown } | undefined)?.languageCode)
+          : null;
+
+      if (requestedLanguageCode) {
+        const currentLanguageCode = normalizeLanguageCode(token.languageCode) ?? "en";
+        if (requestedLanguageCode !== currentLanguageCode && asString(token.refreshToken)) {
+          return refreshAccessToken(
+            {
+              ...token,
+              languageCode: requestedLanguageCode,
+            },
+            requestedLanguageCode,
+          );
+        }
+
+        token.languageCode = requestedLanguageCode;
       }
 
       const accessToken = asString(token.accessToken);

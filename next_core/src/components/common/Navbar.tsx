@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
 
 export function Navbar() {
   return (
@@ -8,12 +9,7 @@ export function Navbar() {
           Next Core
         </Link>
         <div className="flex items-center gap-4 text-sm">
-          <Link href="/dashboard" className="text-slate-600 hover:text-slate-900">
-            Dashboard
-          </Link>
-          <Link href="/users" className="text-slate-600 hover:text-slate-900">
-            Users
-          </Link>
+          <LanguageSwitcher />
         </div>
       </nav>
     </header>

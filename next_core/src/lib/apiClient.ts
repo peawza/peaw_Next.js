@@ -300,6 +300,31 @@ export async function APIPost<T = unknown>(
   }
 }
 
+/** POST â€” à¸ªà¹ˆà¸‡à¸‚à¹‰à¸­à¸¡à¸¹à¸¥à¸žà¸£à¹‰à¸­à¸¡à¹à¸™à¸š Bearer token (server/client safe) */
+export async function APIPostWithToken<T = unknown>(
+  url: string,
+  data?: unknown,
+  accessToken?: string,
+): Promise<T> {
+  try {
+    const response = await axios.post<T>(
+      url,
+      data ? dateTransformer(data) : undefined,
+      {
+        timeout: API_TIMEOUT,
+        headers: {
+          "Content-Type": "application/json",
+          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error) {
+    return handleApiError(error, "APIPostWithToken");
+  }
+}
+
 /** GET — ดาวน์โหลดไฟล์ */
 export async function APIGetFile(
   url: string,

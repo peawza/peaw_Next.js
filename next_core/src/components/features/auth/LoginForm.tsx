@@ -11,6 +11,15 @@ type LoginFormProps = {
   onSubmit?: (payload: LoginPayload) => void | Promise<void>;
 };
 
+type PreLoginApiResponse = {
+  status: "success" | "verify_login_required" | "first_login_required" | "error";
+  payload?: unknown;
+  token?: string | null;
+  username?: string;
+  message?: string;
+  error?: string;
+};
+
 const initialState: LoginPayload = {
   email: "",
   password: "",
@@ -34,10 +43,57 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         return;
       }
 
+      const preLoginResponse = await fetch("/api/auth/prelogin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          UserName: formData.email,
+          Password: formData.password,
+          Device: "web",
+        }),
+      });
+
+      const preLoginBody = (await preLoginResponse.json()) as PreLoginApiResponse;
+
+      if (preLoginBody.status === "verify_login_required") {
+        if (!preLoginBody.token) {
+          setErrorMessage("OTP verification is required but token is missing");
+          return;
+        }
+
+        const params = new URLSearchParams({
+          token: preLoginBody.token,
+          username: preLoginBody.username || formData.email,
+        });
+        router.push(`/confirm-otp?${params.toString()}`);
+        return;
+      }
+
+      if (preLoginBody.status === "first_login_required") {
+        if (!preLoginBody.token) {
+          setErrorMessage("First login is required but token is missing");
+          return;
+        }
+
+        const params = new URLSearchParams({
+          token: preLoginBody.token,
+          username: preLoginBody.username || formData.email,
+        });
+        router.push(`/firstlogin?${params.toString()}`);
+        return;
+      }
+
+      if (preLoginBody.status === "error") {
+        setErrorMessage(preLoginBody.message || "Invalid username or password");
+        return;
+      }
+
       const result = await signIn("credentials", {
-        username: formData.email,
-        password: formData.password,
-        device: "web",
+        mode: "direct",
+        username: preLoginBody.username || formData.email,
+        loginPayload: JSON.stringify(preLoginBody.payload ?? {}),
         redirect: false,
       });
 
@@ -46,7 +102,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         return;
       }
 
-      router.push("/dashboard");
+      router.push("/");
       router.refresh();
     } catch {
       setErrorMessage("Unable to sign in. Please try again.");
