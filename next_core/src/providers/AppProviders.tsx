@@ -1,6 +1,7 @@
 "use client";
 
 import { PrimeReactAppProvider } from "@/providers/PrimeReactProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import { SessionProvider } from "next-auth/react";
 
 type AppProvidersProps = {
@@ -9,8 +10,10 @@ type AppProvidersProps = {
 
 export function AppProviders({ children }: AppProvidersProps) {
   return (
-    <SessionProvider>
-      <PrimeReactAppProvider>{children}</PrimeReactAppProvider>
-    </SessionProvider>
+    <ThemeProvider>
+      <SessionProvider>
+        <PrimeReactAppProvider>{children}</PrimeReactAppProvider>
+      </SessionProvider>
+    </ThemeProvider>
   );
 }

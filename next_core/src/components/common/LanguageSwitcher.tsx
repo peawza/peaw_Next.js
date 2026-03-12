@@ -50,15 +50,15 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <div className="inline-flex items-center overflow-hidden rounded-md border border-slate-200">
+    <div className="inline-flex items-center overflow-hidden rounded-md border border-slate-200 dark:border-slate-700">
       <button
         type="button"
         onClick={() => changeLanguage("en")}
         disabled={pendingCode !== null}
         className={`px-2 py-1 text-xs font-semibold transition ${
           currentLanguageCode === "en"
-            ? "bg-slate-900 text-white"
-            : "bg-white text-slate-700 hover:bg-slate-100"
+            ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
+            : "bg-white text-slate-700 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
         } ${pendingCode !== null ? "opacity-70" : ""}`}
         title="Switch to English"
       >
@@ -73,8 +73,8 @@ export function LanguageSwitcher() {
         disabled={pendingCode !== null}
         className={`px-2 py-1 text-xs font-semibold transition ${
           currentLanguageCode === "th"
-            ? "bg-slate-900 text-white"
-            : "bg-white text-slate-700 hover:bg-slate-100"
+            ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
+            : "bg-white text-slate-700 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
         } ${pendingCode !== null ? "opacity-70" : ""}`}
         title="สลับเป็นภาษาไทย"
       >

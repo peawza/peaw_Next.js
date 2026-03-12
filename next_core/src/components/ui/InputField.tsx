@@ -15,7 +15,7 @@ export function InputField({ label, id, ...props }: InputFieldProps) {
   return (
     <div className="flex flex-col gap-2">
       {label ? (
-        <label htmlFor={inputId} className="text-sm font-medium text-slate-700">
+        <label htmlFor={inputId} className="text-sm font-medium text-slate-700 dark:text-slate-300">
           {label}
         </label>
       ) : null}

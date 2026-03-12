@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 @import "primereact/resources/themes/lara-light-blue/theme.css";
 @import "primereact/resources/primereact.min.css";
 @import "primeicons/primeicons.css";
@@ -7,10 +8,73 @@
   color-scheme: light;
 }
 
+.dark {
+  color-scheme: dark;
+}
+
 body {
   min-height: 100vh;
   margin: 0;
   background: #f8fafc;
   color: #0f172a;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.dark body {
+  background: #020617;
+  color: #e2e8f0;
+}
+
+.dark .p-inputtext,
+.dark .p-password-input,
+.dark .p-dropdown,
+.dark .p-multiselect {
+  background: #0f172a;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+.dark .p-inputtext::placeholder {
+  color: #94a3b8;
+}
+
+.dark .p-inputtext:enabled:hover,
+.dark .p-password-input:enabled:hover {
+  border-color: #475569;
+}
+
+.dark .p-inputtext:enabled:focus,
+.dark .p-password-input:enabled:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 0.2rem rgb(96 165 250 / 0.2);
+}
+
+.dark .p-datatable .p-datatable-header,
+.dark .p-datatable .p-datatable-thead > tr > th,
+.dark .p-datatable .p-datatable-tbody > tr,
+.dark .p-datatable .p-datatable-tbody > tr > td,
+.dark .p-paginator {
+  background: #0f172a;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+.dark .p-datatable .p-datatable-tbody > tr:hover {
+  background: #1e293b;
+}
+
+.dark .p-paginator .p-paginator-page,
+.dark .p-paginator .p-paginator-next,
+.dark .p-paginator .p-paginator-prev,
+.dark .p-paginator .p-paginator-first,
+.dark .p-paginator .p-paginator-last {
+  color: #e2e8f0;
+}
+
+.dark .p-paginator .p-paginator-page.p-highlight {
+  background: #334155;
+  color: #e2e8f0;
 }

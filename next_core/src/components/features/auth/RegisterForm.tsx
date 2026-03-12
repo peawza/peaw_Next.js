@@ -26,7 +26,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
   };
 
   return (
-    <form className="space-y-4 rounded-lg border border-slate-200 bg-white p-6" onSubmit={handleSubmit}>
+    <form className="space-y-4 rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900" onSubmit={handleSubmit}>
       <InputField
         label="Name"
         value={formData.name}

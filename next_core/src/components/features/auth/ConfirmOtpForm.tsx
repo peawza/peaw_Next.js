@@ -105,7 +105,7 @@ export function ConfirmOtpForm({ token, username }: ConfirmOtpFormProps) {
   };
 
   return (
-    <form className="space-y-4 rounded-lg border border-slate-200 bg-white p-6" onSubmit={handleVerify}>
+    <form className="space-y-4 rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900" onSubmit={handleVerify}>
       <InputField label="Username" type="text" value={username} disabled />
       <InputField
         label="OTP Code"
@@ -116,13 +116,13 @@ export function ConfirmOtpForm({ token, username }: ConfirmOtpFormProps) {
       />
 
       {errorMessage ? (
-        <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+        <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300">
           {errorMessage}
         </p>
       ) : null}
 
       {infoMessage ? (
-        <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+        <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-300">
           {infoMessage}
         </p>
       ) : null}

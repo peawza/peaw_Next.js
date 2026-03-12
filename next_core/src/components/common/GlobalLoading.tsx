@@ -15,13 +15,12 @@ export default function GlobalLoading() {
       </div>
 
       {/* Full screen overlay (optional) */}
-      <div className="fixed inset-0 z-9998 flex items-center justify-center bg-black/20">
-        <div className="flex flex-col items-center gap-3 rounded-xl bg-white px-8 py-6 shadow-lg">
+      <div className="fixed inset-0 z-9998 flex items-center justify-center bg-black/20 dark:bg-black/50">
+        <div className="flex flex-col items-center gap-3 rounded-xl bg-white px-8 py-6 shadow-lg dark:bg-slate-800">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-          <span className="text-sm text-gray-500">กำลังโหลด...</span>
+          <span className="text-sm text-gray-500 dark:text-slate-300">Loading...</span>
         </div>
       </div>
     </>
   );
 }
-
