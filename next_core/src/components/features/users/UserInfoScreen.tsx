@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { Button } from "@/components/ui/Button";
 import { PasswordField } from "@/components/ui/PasswordField";
@@ -26,19 +27,19 @@ const initialChangePasswordForm: ChangePasswordFormState = {
   confirmNewPassword: "",
 };
 
-function toText(value: unknown): string {
+function toText(value: unknown, yesLabel: string, noLabel: string): string {
   if (value === null || value === undefined || value === "") {
     return "-";
   }
 
   if (typeof value === "boolean") {
-    return value ? "Yes" : "No";
+    return value ? yesLabel : noLabel;
   }
 
   return String(value);
 }
 
-function formatDateTime(value: string | Date | null): string {
+function formatDateTime(value: string | Date | null, languageCode: string): string {
   if (!value) {
     return "-";
   }
@@ -48,7 +49,8 @@ function formatDateTime(value: string | Date | null): string {
     return String(value);
   }
 
-  return new Intl.DateTimeFormat("th-TH", {
+  const locale = languageCode.toLowerCase().startsWith("th") ? "th-TH" : "en-US";
+  return new Intl.DateTimeFormat(locale, {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(date);
@@ -84,6 +86,7 @@ function InfoItem({ label, value }: { label: string; value: string }) {
 }
 
 export function UserInfoScreen({ userId }: UserInfoScreenProps) {
+  const { t, i18n } = useTranslation();
   const { data: session, status } = useSession();
   const [userInfo, setUserInfo] = useState<UmsUserInfo | null>(null);
   const [isFetchingUserInfo, setIsFetchingUserInfo] = useState(true);
@@ -97,6 +100,8 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const accessToken = session?.accessToken ?? null;
+  const yesLabel = t("COMMON.Yes", { defaultValue: "Yes" });
+  const noLabel = t("COMMON.No", { defaultValue: "No" });
 
   const resolvedUserId = useMemo(() => {
     if (userId === "me") {
@@ -108,13 +113,13 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
   const loadUserInfo = useCallback(async () => {
     if (!accessToken) {
       setIsFetchingUserInfo(false);
-      setUserInfoError("Access token is missing. Please sign in again.");
+      setUserInfoError(t("UserInfo.Error.AccessTokenMissing", { defaultValue: "Access token is missing. Please sign in again." }));
       return;
     }
 
     if (!resolvedUserId) {
       setIsFetchingUserInfo(false);
-      setUserInfoError("User ID is missing.");
+      setUserInfoError(t("UserInfo.Error.UserIdMissing", { defaultValue: "User ID is missing." }));
       return;
     }
 
@@ -126,7 +131,7 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
 
       if (!response.resultStatus || !response.data) {
         setUserInfo(null);
-        setUserInfoError(response.resultMessage || "Cannot load user info.");
+        setUserInfoError(response.resultMessage || t("UserInfo.Error.LoadFailed", { defaultValue: "Cannot load user info." }));
         return;
       }
 
@@ -134,12 +139,12 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
     } catch (error) {
       setUserInfo(null);
       setUserInfoError(
-        error instanceof Error ? error.message : "Cannot load user info.",
+        error instanceof Error ? error.message : t("UserInfo.Error.LoadFailed", { defaultValue: "Cannot load user info." }),
       );
     } finally {
       setIsFetchingUserInfo(false);
     }
-  }, [accessToken, resolvedUserId]);
+  }, [accessToken, resolvedUserId, t]);
 
   useEffect(() => {
     if (status === "loading") {
@@ -149,12 +154,12 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
     if (status !== "authenticated") {
       setIsFetchingUserInfo(false);
       setUserInfo(null);
-      setUserInfoError("Session expired. Please sign in again.");
+      setUserInfoError(t("UserInfo.Error.SessionExpired", { defaultValue: "Session expired. Please sign in again." }));
       return;
     }
 
     void loadUserInfo();
-  }, [status, loadUserInfo]);
+  }, [status, loadUserInfo, t]);
 
   const handleSubmitChangePassword = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -162,27 +167,27 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
     setPasswordMessage(null);
 
     if (!userInfo?.userName) {
-      setPasswordError("User name is unavailable.");
+      setPasswordError(t("ChangePassword.Error.UserNameUnavailable", { defaultValue: "User name is unavailable." }));
       return;
     }
 
     if (!accessToken) {
-      setPasswordError("Access token is missing. Please sign in again.");
+      setPasswordError(t("ChangePassword.Error.AccessTokenMissing", { defaultValue: "Access token is missing. Please sign in again." }));
       return;
     }
 
     if (!passwordForm.oldPassword || !passwordForm.newPassword) {
-      setPasswordError("Please fill old and new password.");
+      setPasswordError(t("ChangePassword.Error.Required", { defaultValue: "Please fill old and new password." }));
       return;
     }
 
     if (passwordForm.oldPassword !== passwordForm.confirmOldPassword) {
-      setPasswordError("Old password and confirm old password do not match.");
+      setPasswordError(t("ChangePassword.Error.ConfirmOldPassword", { defaultValue: "Old password and confirm old password do not match." }));
       return;
     }
 
     if (passwordForm.newPassword !== passwordForm.confirmNewPassword) {
-      setPasswordError("New password and confirm new password do not match.");
+      setPasswordError(t("ChangePassword.Error.ConfirmNewPassword", { defaultValue: "New password and confirm new password do not match." }));
       return;
     }
 
@@ -200,16 +205,23 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
 
       if (isChangePasswordFailed(response)) {
         setPasswordError(
-          response.data?.messageName || response.resultMessage || "Change password failed.",
+          response.data?.messageName ||
+            response.resultMessage ||
+            t("ChangePassword.Error.SubmitFailed", { defaultValue: "Change password failed." }),
         );
         return;
       }
 
-      setPasswordMessage(response.resultMessage || "Password changed successfully.");
+      setPasswordMessage(
+        response.resultMessage ||
+          t("ChangePassword.Success", { defaultValue: "Password changed successfully." }),
+      );
       setPasswordForm(initialChangePasswordForm);
     } catch (error) {
       setPasswordError(
-        error instanceof Error ? error.message : "Change password failed.",
+        error instanceof Error
+          ? error.message
+          : t("ChangePassword.Error.SubmitFailed", { defaultValue: "Change password failed." }),
       );
     } finally {
       setIsSubmittingPassword(false);
@@ -224,13 +236,34 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
     return [
       // { label: "ID", value: toText(userInfo.id) },
       // { label: "User Number", value: toText(userInfo.userNumber) },
-      { label: "User Name", value: toText(userInfo.userName) },
-      { label: "First Name", value: toText(userInfo.firstName) },
-      { label: "Last Name", value: toText(userInfo.lastName) },
-      { label: "Department Code", value: toText(userInfo.departmentCode) },
-      { label: "Position Code", value: toText(userInfo.positionCode) },
-      { label: "Email", value: toText(userInfo.email) },
-      { label: "Phone Number", value: toText(userInfo.phoneNumber) },
+      {
+        label: t("UserInfo.UserName", { defaultValue: "User Name" }),
+        value: toText(userInfo.userName, yesLabel, noLabel),
+      },
+      {
+        label: t("UserInfo.FirstName", { defaultValue: "First Name" }),
+        value: toText(userInfo.firstName, yesLabel, noLabel),
+      },
+      {
+        label: t("UserInfo.LastName", { defaultValue: "Last Name" }),
+        value: toText(userInfo.lastName, yesLabel, noLabel),
+      },
+      {
+        label: t("UserInfo.DepartmentCode", { defaultValue: "Department Code" }),
+        value: toText(userInfo.departmentCode, yesLabel, noLabel),
+      },
+      {
+        label: t("UserInfo.PositionCode", { defaultValue: "Position Code" }),
+        value: toText(userInfo.positionCode, yesLabel, noLabel),
+      },
+      {
+        label: t("UserInfo.Email", { defaultValue: "Email" }),
+        value: toText(userInfo.email, yesLabel, noLabel),
+      },
+      {
+        label: t("UserInfo.PhoneNumber", { defaultValue: "Phone Number" }),
+        value: toText(userInfo.phoneNumber, yesLabel, noLabel),
+      },
       // { label: "Language Code", value: toText(userInfo.languageCode) },
       // { label: "First Login", value: toText(userInfo.firstLoginFlag) },
       // { label: "Active", value: toText(userInfo.activeFlag) },
@@ -239,16 +272,19 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
       // { label: "Create Date", value: formatDateTime(userInfo.createDate) },
       // { label: "Update By", value: toText(userInfo.updateBy) },
       // { label: "Update Date", value: formatDateTime(userInfo.updateDate) },
-      { label: "Last Login Date", value: formatDateTime(userInfo.lastLoginDate) },
       {
-        label: "Last Update Password Date",
-        value: formatDateTime(userInfo.lastUpdatePasswordDate),
+        label: t("UserInfo.LastLoginDate", { defaultValue: "Last Login Date" }),
+        value: formatDateTime(userInfo.lastLoginDate, i18n.language),
+      },
+      {
+        label: t("UserInfo.LastUpdatePasswordDate", { defaultValue: "Last Update Password Date" }),
+        value: formatDateTime(userInfo.lastUpdatePasswordDate, i18n.language),
       },
       // { label: "Active Date", value: formatDateTime(userInfo.activeDate) },
       // { label: "Inactive Date", value: formatDateTime(userInfo.inActiveDate) },
       // { label: "Remark", value: toText(userInfo.remark) },
     ];
-  }, [userInfo]);
+  }, [i18n.language, noLabel, t, userInfo, yesLabel]);
 
   if (isFetchingUserInfo) {
     return <LoadingSpinner />;
@@ -258,10 +294,10 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
     <section className="space-y-6">
       <div className="space-y-4 rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
         <div className="flex items-center justify-between gap-2">
-          <h1 className="text-3xl font-bold">User Info</h1>
+          <h1 className="text-3xl font-bold">{t("UserInfo.Title", { defaultValue: "User Info" })}</h1>
           <Button
             type="button"
-            label="Refresh"
+            label={t("COMMON.Refresh", { defaultValue: "Refresh" })}
             className="p-button-outlined p-button-sm"
             onClick={() => void loadUserInfo()}
           />
@@ -283,10 +319,12 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
       </div>
 
       <div className="space-y-4 rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
-        <h2 className="text-2xl font-semibold">Change Password</h2>
+        <h2 className="text-2xl font-semibold">
+          {t("ChangePassword.Title", { defaultValue: "Change Password" })}
+        </h2>
         <form className="grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleSubmitChangePassword}>
           <PasswordField
-            label="Old Password"
+            label={t("ChangePassword.CurrentPassword", { defaultValue: "Current Password" })}
             value={passwordForm.oldPassword}
             onChange={(event) =>
               setPasswordForm((prev) => ({
@@ -298,7 +336,9 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
             required
           />
           <PasswordField
-            label="Confirm Old Password"
+            label={t("ChangePassword.ConfirmPassword", {
+              defaultValue: "Confirm Current Password",
+            })}
             value={passwordForm.confirmOldPassword}
             onChange={(event) =>
               setPasswordForm((prev) => ({
@@ -310,7 +350,7 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
             required
           />
           <PasswordField
-            label="New Password"
+            label={t("ChangePassword.NewPassword", { defaultValue: "New Password" })}
             value={passwordForm.newPassword}
             onChange={(event) =>
               setPasswordForm((prev) => ({
@@ -322,7 +362,7 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
             required
           />
           <PasswordField
-            label="Confirm New Password"
+            label={t("ChangePassword.ConfirmPassword", { defaultValue: "Confirm Password" })}
             value={passwordForm.confirmNewPassword}
             onChange={(event) =>
               setPasswordForm((prev) => ({
@@ -351,7 +391,11 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
               <div className="col-span-12 md:col-span-3 md:col-start-10">
                 <Button
                   type="submit"
-                  label={isSubmittingPassword ? "Submitting..." : "Change Password"}
+                  label={
+                    isSubmittingPassword
+                      ? t("COMMON.Submitting", { defaultValue: "Submitting..." })
+                      : t("ChangePassword.Title", { defaultValue: "Change Password" })
+                  }
                   className="w-full"
                   disabled={isSubmittingPassword}
                 />

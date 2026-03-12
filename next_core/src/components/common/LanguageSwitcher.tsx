@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { initI18n } from "@/lib/i18n";
 
 type LanguageCode = "en" | "th";
 
@@ -25,6 +26,10 @@ export function LanguageSwitcher() {
   const [pendingCode, setPendingCode] = useState<LanguageCode | null>(null);
 
   const currentLanguageCode = normalizeLanguageCode(session?.languageCode);
+  const customerId =
+    session?.customerId !== undefined && session?.customerId !== null
+      ? String(session.customerId)
+      : "";
 
   const changeLanguage = async (languageCode: LanguageCode) => {
     if (status !== "authenticated" || pendingCode || currentLanguageCode === languageCode) {
@@ -34,6 +39,8 @@ export function LanguageSwitcher() {
     setPendingCode(languageCode);
 
     try {
+      await initI18n(languageCode, customerId || null);
+
       const updatedSession = await update({
         languageCode,
       });
@@ -62,9 +69,6 @@ export function LanguageSwitcher() {
         } ${pendingCode !== null ? "opacity-70" : ""}`}
         title="Switch to English"
       >
-        <span className="mr-1" aria-hidden="true">
-          🇬🇧
-        </span>
         EN
       </button>
       <button
@@ -76,11 +80,8 @@ export function LanguageSwitcher() {
             ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
             : "bg-white text-slate-700 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
         } ${pendingCode !== null ? "opacity-70" : ""}`}
-        title="สลับเป็นภาษาไทย"
+        title="Switch to Thai"
       >
-        <span className="mr-1" aria-hidden="true">
-          🇹🇭
-        </span>
         TH
       </button>
     </div>
