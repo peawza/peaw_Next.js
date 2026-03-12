@@ -14,8 +14,27 @@ const axiosInstance = axios.create({
   },
 });
 
+async function getAccessTokenFromSession(): Promise<string | null> {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const { getSession } = await import("next-auth/react");
+  const session = await getSession();
+  return session?.accessToken ?? null;
+}
+
+async function handleUnauthorized(): Promise<void> {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const { signOut } = await import("next-auth/react");
+  await signOut({ redirect: true, callbackUrl: "/login" });
+}
+
 axiosInstance.interceptors.request.use(
-  (config) => {
+  async (config) => {
     const loadingConfig = config as RequestConfigWithLoader;
     const shouldTrackLoading = typeof window !== "undefined";
     loadingConfig._trackGlobalLoading = shouldTrackLoading;
@@ -28,7 +47,7 @@ axiosInstance.interceptors.request.use(
       return loadingConfig;
     }
 
-    const token = window.localStorage.getItem("token");
+    const token = await getAccessTokenFromSession();
     if (!token) {
       return loadingConfig;
     }
@@ -48,7 +67,7 @@ axiosInstance.interceptors.response.use(
 
     return response;
   },
-  (error: unknown) => {
+  async (error: unknown) => {
     if (axios.isAxiosError(error)) {
       const errorConfig = error.config as RequestConfigWithLoader | undefined;
       if (errorConfig?._trackGlobalLoading) {
@@ -61,7 +80,7 @@ axiosInstance.interceptors.response.use(
       axios.isAxiosError(error) &&
       error.response?.status === 401
     ) {
-      window.location.href = "/login";
+      await handleUnauthorized();
     }
 
     return Promise.reject(error);

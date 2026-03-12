@@ -1,4 +1,4 @@
-import { GlobalLoading } from "@/components/common/GlobalLoading";
+import GlobalLoading from "@/components/common/GlobalLoading";
 
 type LocaleLayoutProps = {
   children: React.ReactNode;

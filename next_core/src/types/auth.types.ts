@@ -1,5 +1,5 @@
 export interface AuthUser {
-  id: number;
+  id: string | number;
   name: string;
   email: string;
   role: "admin" | "user";
@@ -8,6 +8,7 @@ export interface AuthUser {
 export interface LoginPayload {
   email: string;
   password: string;
+  languageCode?: string;
 }
 
 export interface RegisterPayload {
@@ -25,4 +26,17 @@ export interface AuthState {
   user: AuthUser | null;
   token: string | null;
   isAuthenticated: boolean;
+}
+
+export interface BackendLoginResponse {
+  Id: string;
+  UserNumber: number;
+  UserName: string;
+  LanguageCode: string;
+  DisplayName: string;
+  Token: string;
+  RefreshToken: string;
+  CustomerID: number;
+  PermissionScreen: string;
+  Timeout: number;
 }

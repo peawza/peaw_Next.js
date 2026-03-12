@@ -13,6 +13,7 @@
     "axios": "^1.13.6",
     "date-fns": "^4.1.0",
     "next": "16.1.6",
+    "next-auth": "^5.0.0-beta.30",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.7",
     "react": "19.2.3",
