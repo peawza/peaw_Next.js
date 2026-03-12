@@ -1,11 +1,10 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
 
 type Theme = "light" | "dark";
 
 type ThemeContextValue = {
-  theme: Theme;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 };
@@ -22,6 +21,9 @@ function applyTheme(theme: Theme): void {
 }
 
 function getStoredTheme(): Theme | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
   const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
   if (storedTheme === "light" || storedTheme === "dark") {
     return storedTheme;
@@ -29,59 +31,51 @@ function getStoredTheme(): Theme | null {
   return null;
 }
 
-function resolveInitialTheme(): Theme {
+function resolvePreferredTheme(): Theme {
   const storedTheme = getStoredTheme();
   if (storedTheme) {
     return storedTheme;
   }
+  if (typeof window === "undefined") {
+    return "light";
+  }
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-function getThemeFromDocument(): Theme | null {
+function getThemeFromDocument(): Theme {
   if (typeof document === "undefined") {
-    return null;
+    return "light";
   }
   const themeFromDocument = document.documentElement.getAttribute("data-theme");
   if (themeFromDocument === "light" || themeFromDocument === "dark") {
     return themeFromDocument;
   }
-  return null;
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window === "undefined") {
-      return "light";
-    }
-    return getThemeFromDocument() ?? resolveInitialTheme();
-  });
-
   useEffect(() => {
-    applyTheme(theme);
-  }, [theme]);
+    applyTheme(resolvePreferredTheme());
+  }, []);
 
   const setTheme = useCallback((nextTheme: Theme) => {
-    setThemeState(nextTheme);
     applyTheme(nextTheme);
     window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setThemeState((previousTheme) => {
-      const nextTheme = previousTheme === "dark" ? "light" : "dark";
-      applyTheme(nextTheme);
-      window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
-      return nextTheme;
-    });
+    const currentTheme = getThemeFromDocument();
+    const nextTheme: Theme = currentTheme === "dark" ? "light" : "dark";
+    applyTheme(nextTheme);
+    window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
   }, []);
 
   const contextValue = useMemo(
     () => ({
-      theme,
       setTheme,
       toggleTheme,
     }),
-    [theme, setTheme, toggleTheme],
+    [setTheme, toggleTheme],
   );
 
   return <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>;

@@ -21,7 +21,7 @@ export default async function MainLayout({
       <div className="flex min-h-screen flex-1 flex-col">
         <Navbar />
         <main className="flex-1 p-6">{children}</main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </div>
   );
