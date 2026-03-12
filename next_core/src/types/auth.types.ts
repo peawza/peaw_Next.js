@@ -1,0 +1,28 @@
+export interface AuthUser {
+  id: number;
+  name: string;
+  email: string;
+  role: "admin" | "user";
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  user: AuthUser;
+  token: string;
+}
+
+export interface AuthState {
+  user: AuthUser | null;
+  token: string | null;
+  isAuthenticated: boolean;
+}
