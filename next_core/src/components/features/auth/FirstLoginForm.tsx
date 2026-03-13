@@ -1,10 +1,11 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { InputField } from "@/components/ui/InputField";
+import { callJsonApi, hasDirectLoginPayload, readErrorMessage } from "@/lib/authRequest";
 
 type FirstLoginFormProps = {
   token: string;
@@ -37,23 +38,29 @@ export function FirstLoginForm({ token, username }: FirstLoginFormProps) {
     setErrorMessage(null);
 
     try {
-      const response = await fetch("/api/auth/firstlogin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          UserName: username,
-          OldPassword: oldPassword,
-          NewPassword: newPassword,
-          Token: token,
-        }),
+      const response = await callJsonApi("/api/auth/firstlogin", {
+        UserName: username,
+        OldPassword: oldPassword,
+        NewPassword: newPassword,
+        Token: token,
       });
 
-      const body = (await response.json()) as FirstLoginApiResponse;
+      if (response.status === "error") {
+        setErrorMessage(readErrorMessage(response.payload) ?? response.message ?? "Cannot update password");
+        return;
+      }
+
+      const body = response.payload as FirstLoginApiResponse;
 
       if (body.status === "error") {
         setErrorMessage(body.message || "Cannot update password");
+        return;
+      }
+
+      if (!hasDirectLoginPayload(body.payload)) {
+        setErrorMessage(
+          readErrorMessage(body.payload) ?? "First login API did not return a usable login payload",
+        );
         return;
       }
 
@@ -118,3 +125,5 @@ export function FirstLoginForm({ token, username }: FirstLoginFormProps) {
     </form>
   );
 }
+
+

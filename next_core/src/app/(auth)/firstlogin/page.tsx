@@ -1,7 +1,7 @@
-import { redirect } from "next/navigation";
+﻿import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { isAccessTokenExpired } from "@/lib/authToken";
 import { FirstLoginForm } from "@/components/features/auth/FirstLoginForm";
+import { isAccessTokenExpired } from "@/lib/authToken";
 
 type FirstLoginPageProps = {
   searchParams: Promise<{

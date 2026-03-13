@@ -1,10 +1,11 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { InputField } from "@/components/ui/InputField";
+import { callJsonApi, hasDirectLoginPayload, readErrorMessage } from "@/lib/authRequest";
 
 type ConfirmOtpFormProps = {
   token: string;
@@ -33,22 +34,28 @@ export function ConfirmOtpForm({ token, username }: ConfirmOtpFormProps) {
     setInfoMessage(null);
 
     try {
-      const response = await fetch("/api/auth/otp/verify", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          Token: token,
-          OtpCode: otpCode,
-          Device: "web",
-        }),
+      const response = await callJsonApi("/api/auth/otp/verify", {
+        Token: token,
+        OtpCode: otpCode,
+        Device: "web",
       });
 
-      const body = (await response.json()) as OtpApiResponse;
+      if (response.status === "error") {
+        setErrorMessage(readErrorMessage(response.payload) ?? response.message ?? "OTP verification failed");
+        return;
+      }
+
+      const body = response.payload as OtpApiResponse;
 
       if (body.status === "error") {
         setErrorMessage(body.message || "OTP verification failed");
+        return;
+      }
+
+      if (!hasDirectLoginPayload(body.payload)) {
+        setErrorMessage(
+          readErrorMessage(body.payload) ?? "OTP verify API did not return a usable login payload",
+        );
         return;
       }
 
@@ -79,17 +86,16 @@ export function ConfirmOtpForm({ token, username }: ConfirmOtpFormProps) {
     setInfoMessage(null);
 
     try {
-      const response = await fetch("/api/auth/otp/resend", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          Token: token,
-        }),
+      const response = await callJsonApi("/api/auth/otp/resend", {
+        Token: token,
       });
 
-      const body = (await response.json()) as OtpApiResponse;
+      if (response.status === "error") {
+        setErrorMessage(readErrorMessage(response.payload) ?? response.message ?? "Cannot resend OTP");
+        return;
+      }
+
+      const body = response.payload as OtpApiResponse;
 
       if (body.status === "error") {
         setErrorMessage(body.message || "Cannot resend OTP");
@@ -144,3 +150,5 @@ export function ConfirmOtpForm({ token, username }: ConfirmOtpFormProps) {
     </form>
   );
 }
+
+

@@ -1,32 +1,19 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
+import {
+  asString,
+  hasDirectLoginPayload,
+  isBackendExceptionPayload,
+  parseJsonOrNull,
+  readBooleanByKeys,
+  readErrorMessage,
+  readStringByKeys,
+} from "@/lib/authRequest";
 
 type PreLoginRequestBody = {
   UserName?: string;
   Password?: string;
   Device?: string;
 };
-
-function asString(value: unknown): string | null {
-  if (typeof value === "string" && value.trim() !== "") {
-    return value;
-  }
-  if (typeof value === "number" && Number.isFinite(value)) {
-    return String(value);
-  }
-  return null;
-}
-
-function parseJsonOrNull(input: string): unknown {
-  if (!input || input.trim() === "") {
-    return null;
-  }
-
-  try {
-    return JSON.parse(input) as unknown;
-  } catch {
-    return null;
-  }
-}
 
 type RequestErrorResult = {
   status: "error";
@@ -50,100 +37,6 @@ function buildApiEndpoint(path: string | undefined, fallbackPath: string): strin
   const normalizedBaseUrl = apiBaseUrl.endsWith("/") ? apiBaseUrl.slice(0, -1) : apiBaseUrl;
   const normalizedPath = apiPath.startsWith("/") ? apiPath : `/${apiPath}`;
   return `${normalizedBaseUrl}${normalizedPath}`;
-}
-
-function readBooleanByKeys(input: unknown, keys: string[], depth = 0): boolean | null {
-  if (depth > 6 || input == null) {
-    return null;
-  }
-
-  if (typeof input === "boolean") {
-    return input;
-  }
-
-  if (typeof input !== "object") {
-    return null;
-  }
-
-  if (Array.isArray(input)) {
-    for (const item of input) {
-      const result = readBooleanByKeys(item, keys, depth + 1);
-      if (result != null) {
-        return result;
-      }
-    }
-    return null;
-  }
-
-  const record = input as Record<string, unknown>;
-
-  for (const key of keys) {
-    const value = record[key];
-    if (typeof value === "boolean") {
-      return value;
-    }
-    if (typeof value === "string") {
-      const normalized = value.trim().toLowerCase();
-      if (normalized === "true") {
-        return true;
-      }
-      if (normalized === "false") {
-        return false;
-      }
-    }
-  }
-
-  for (const value of Object.values(record)) {
-    const result = readBooleanByKeys(value, keys, depth + 1);
-    if (result != null) {
-      return result;
-    }
-  }
-
-  return null;
-}
-
-function readStringByKeys(input: unknown, keys: string[], depth = 0): string | null {
-  if (depth > 6 || input == null) {
-    return null;
-  }
-
-  const direct = asString(input);
-  if (direct && depth > 0) {
-    return direct;
-  }
-
-  if (typeof input !== "object") {
-    return null;
-  }
-
-  if (Array.isArray(input)) {
-    for (const item of input) {
-      const result = readStringByKeys(item, keys, depth + 1);
-      if (result) {
-        return result;
-      }
-    }
-    return null;
-  }
-
-  const record = input as Record<string, unknown>;
-
-  for (const key of keys) {
-    const value = asString(record[key]);
-    if (value) {
-      return value;
-    }
-  }
-
-  for (const value of Object.values(record)) {
-    const result = readStringByKeys(value, keys, depth + 1);
-    if (result) {
-      return result;
-    }
-  }
-
-  return null;
 }
 
 async function callJsonApi(endpoint: string, payload: Record<string, unknown>) {
@@ -176,8 +69,9 @@ async function callJsonApi(endpoint: string, payload: Record<string, unknown>) {
 }
 
 export async function POST(request: Request) {
-  const loginEndpoint = buildApiEndpoint(process.env.AUTH_LOGIN_PATH, "/SSS010/Login");
-  const sendOtpEndpoint = buildApiEndpoint(process.env.AUTH_OTP_SEND_PATH, "/otp/send-otp");
+  const loginEndpoint = buildApiEndpoint(process.env.AUTH_LOGIN_PATH, "/api/auth/SSS010/Login");
+  const sendOtpEndpoint = buildApiEndpoint(process.env.AUTH_OTP_SEND_PATH, "/api/auth/otp/send-otp");
+
   if (!loginEndpoint) {
     return NextResponse.json(
       {
@@ -221,6 +115,18 @@ export async function POST(request: Request) {
     }
 
     const responseBody = loginResult.payload;
+
+    if (isBackendExceptionPayload(responseBody)) {
+      return NextResponse.json(
+        {
+          status: "error",
+          message: readErrorMessage(responseBody) ?? "Login API returned backend exception",
+          payload: responseBody,
+        },
+        { status: 400 },
+      );
+    }
+
     const verifyLogin =
       readBooleanByKeys(responseBody, ["VerifyLogin", "verifyLogin", "OtpRequired"]) === true;
     const firstLogin =
@@ -261,6 +167,18 @@ export async function POST(request: Request) {
       }
 
       const sendOtpPayload = sendOtpResult.payload;
+
+      if (isBackendExceptionPayload(sendOtpPayload)) {
+        return NextResponse.json(
+          {
+            status: "error",
+            message: readErrorMessage(sendOtpPayload) ?? "OTP send API returned backend exception",
+            payload: sendOtpPayload,
+          },
+          { status: 400 },
+        );
+      }
+
       const sendOtpSuccess =
         readBooleanByKeys(sendOtpPayload, ["resultStatus", "ResultStatus", "Success"]) !== false;
 
@@ -268,7 +186,7 @@ export async function POST(request: Request) {
         return NextResponse.json(
           {
             status: "error",
-            message: "Login send-otp returned unsuccessful status",
+            message: readErrorMessage(sendOtpPayload) ?? "Login send-otp returned unsuccessful status",
             payload: sendOtpPayload,
           },
           { status: 400 },
@@ -278,28 +196,61 @@ export async function POST(request: Request) {
       const otpToken =
         readStringByKeys(sendOtpPayload, ["Token", "token", "OtpToken", "VerifyToken"]) ?? token;
 
+      if (!otpToken) {
+        return NextResponse.json(
+          {
+            status: "error",
+            message: "OTP verification is required but token is missing",
+            payload: sendOtpPayload,
+          },
+          { status: 400 },
+        );
+      }
+
       return NextResponse.json({
         status: "verify_login_required",
         token: otpToken,
-        username: userName,
+        username: asString(readStringByKeys(responseBody, ["UserName", "userName"])) ?? userName,
         payload: sendOtpPayload,
         loginPayload: responseBody,
       });
     }
 
     if (firstLogin) {
+      if (!token) {
+        return NextResponse.json(
+          {
+            status: "error",
+            message: "First login is required but token is missing",
+            payload: responseBody,
+          },
+          { status: 400 },
+        );
+      }
+
       return NextResponse.json({
         status: "first_login_required",
         token,
-        username: userName,
+        username: asString(readStringByKeys(responseBody, ["UserName", "userName"])) ?? userName,
         payload: responseBody,
       });
+    }
+
+    if (!hasDirectLoginPayload(responseBody)) {
+      return NextResponse.json(
+        {
+          status: "error",
+          message: readErrorMessage(responseBody) ?? "Login API did not return a usable login payload",
+          payload: responseBody,
+        },
+        { status: 400 },
+      );
     }
 
     return NextResponse.json({
       status: "success",
       payload: responseBody,
-      username: userName,
+      username: asString(readStringByKeys(responseBody, ["UserName", "userName"])) ?? userName,
     });
   } catch (error) {
     return NextResponse.json(

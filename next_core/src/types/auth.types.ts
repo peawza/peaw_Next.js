@@ -6,7 +6,7 @@ export interface AuthUser {
 }
 
 export interface LoginPayload {
-  email: string;
+  userName: string;
   password: string;
   languageCode?: string;
 }

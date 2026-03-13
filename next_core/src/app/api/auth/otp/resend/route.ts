@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
+import { isBackendExceptionPayload, parseJsonOrNull, readErrorMessage } from "@/lib/authRequest";
 
 type OtpResendRequestBody = {
   Token?: string;
@@ -21,20 +22,8 @@ function buildApiEndpoint(path: string | undefined, fallbackPath: string): strin
   return `${normalizedBaseUrl}${normalizedPath}`;
 }
 
-function parseJsonOrNull(input: string): unknown {
-  if (!input || input.trim() === "") {
-    return null;
-  }
-
-  try {
-    return JSON.parse(input) as unknown;
-  } catch {
-    return null;
-  }
-}
-
 export async function POST(request: Request) {
-  const endpoint = buildApiEndpoint(process.env.AUTH_OTP_RESEND_PATH, "/otp/resend-otp");
+  const endpoint = buildApiEndpoint(process.env.AUTH_OTP_RESEND_PATH, "/api/auth/otp/resend-otp");
 
   if (!endpoint) {
     return NextResponse.json(
@@ -74,6 +63,17 @@ export async function POST(request: Request) {
           payload: responseBody,
         },
         { status: response.status },
+      );
+    }
+
+    if (isBackendExceptionPayload(responseBody)) {
+      return NextResponse.json(
+        {
+          status: "error",
+          message: readErrorMessage(responseBody) ?? "OTP resend API returned backend exception",
+          payload: responseBody,
+        },
+        { status: 400 },
       );
     }
 

@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+﻿import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import type { JWT } from "next-auth/jwt";
 import type { BackendLoginResponse } from "@/types";
@@ -241,11 +241,11 @@ function buildApiEndpoint(path: string | undefined, fallbackPath: string): strin
 }
 
 function buildLoginEndpoint(): string | null {
-  return buildApiEndpoint(process.env.AUTH_LOGIN_PATH, "/SSS010/Login");
+  return buildApiEndpoint(process.env.AUTH_LOGIN_PATH, "/api/auth/SSS010/Login");
 }
 
 function buildRefreshEndpoint(): string | null {
-  return buildApiEndpoint(process.env.AUTH_REFRESH_PATH, "/SSS010/RefreshToken");
+  return buildApiEndpoint(process.env.AUTH_REFRESH_PATH, "/api/auth/SSS010/RefreshToken");
 }
 
 function getTokenRefreshError(token: JWT): JWT {
@@ -491,3 +491,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   },
 });
+

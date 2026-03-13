@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 
 type OtpSendRequestBody = {
   UserName?: string;
@@ -35,7 +35,7 @@ function parseJsonOrNull(input: string): unknown {
 }
 
 export async function POST(request: Request) {
-  const endpoint = buildApiEndpoint(process.env.AUTH_OTP_SEND_PATH, "/otp/send-otp");
+  const endpoint = buildApiEndpoint(process.env.AUTH_OTP_SEND_PATH, "/api/auth/otp/send-otp");
 
   if (!endpoint) {
     return NextResponse.json(
@@ -98,3 +98,4 @@ export async function POST(request: Request) {
     );
   }
 }
+
