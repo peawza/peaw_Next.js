@@ -10,6 +10,94 @@ import { useHasPermission } from "@/hooks/usePermission";
 
 const showExampleUI = process.env.NEXT_PUBLIC_SHOW_EXAMPLE_UI === "true";
 
+type ExampleGroup = {
+  label: string;
+  icon: string;
+  items: { label: string; href: string; icon: string }[];
+};
+
+const exampleGroups: ExampleGroup[] = [
+  {
+    label: "Common UI",
+    icon: "pi pi-palette",
+    items: [
+      { label: "Button Sample", href: "/example-ui", icon: "pi pi-bolt" },
+    ],
+  },
+  {
+    label: "PDF Tools",
+    icon: "pi pi-file-pdf",
+    items: [
+      { label: "PDF Signature", href: "/example-ui/pdf-signature", icon: "pi pi-pencil" },
+      { label: "PDF Annotator", href: "/example-ui/pdf-annotate", icon: "pi pi-pen-to-square" },
+    ],
+  },
+];
+
+function ExampleUIMenu({ pathname }: { pathname: string }) {
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    for (const group of exampleGroups) {
+      if (group.items.some((item) => isPathActive(pathname, item.href))) {
+        initial[group.label] = true;
+      }
+    }
+    return initial;
+  });
+
+  const toggleGroup = (label: string) => {
+    setOpenGroups((prev) => ({ ...prev, [label]: !prev[label] }));
+  };
+
+  return (
+    <div className="mb-4 space-y-1">
+      <p className="px-3 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+        Dev Tools
+      </p>
+      {exampleGroups.map((group) => {
+        const groupOpen = openGroups[group.label] ?? false;
+        return (
+          <div key={group.label} className="space-y-0.5">
+            <button
+              type="button"
+              onClick={() => toggleGroup(group.label)}
+              className="flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm font-medium text-slate-600 hover:bg-amber-50 dark:text-slate-300 dark:hover:bg-amber-900/20"
+            >
+              <span className="flex items-center gap-2">
+                <span className={`${group.icon} text-xs text-amber-600 dark:text-amber-400`} />
+                {group.label}
+              </span>
+              <span className={`pi text-xs ${groupOpen ? "pi-chevron-down" : "pi-chevron-right"}`} />
+            </button>
+            {groupOpen && (
+              <ul className="space-y-0.5 pl-3">
+                {group.items.map((item) => {
+                  const active = isPathActive(pathname, item.href);
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-sm ${
+                          active
+                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
+                            : "text-slate-500 hover:bg-amber-50 dark:text-slate-400 dark:hover:bg-amber-900/20"
+                        }`}
+                      >
+                        <span className={`${item.icon} text-xs`} />
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function hasMainMenu(node: SiteMapNode): boolean {
   return node.attributes["main-menu"] === true;
 }
@@ -230,22 +318,7 @@ export function Sidebar() {
 
         <div className="mt-4 border-t border-slate-200 pt-4 dark:border-slate-700">
           {showExampleUI ? (
-            <div className="mb-4 space-y-1">
-              <p className="px-3 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
-                Dev Tools
-              </p>
-              <Link
-                href="/example-ui"
-                className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm ${
-                  isPathActive(pathname, "/example-ui")
-                    ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
-                    : "text-slate-600 hover:bg-amber-50 dark:text-slate-300 dark:hover:bg-amber-900/20"
-                }`}
-              >
-                <span className="pi pi-palette text-xs" />
-                Button Sample
-              </Link>
-            </div>
+            <ExampleUIMenu pathname={pathname} />
           ) : null}
           <button
             type="button"
