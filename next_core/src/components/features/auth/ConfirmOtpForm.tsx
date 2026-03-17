@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { InputField } from "@/components/ui/InputField";
-import { callJsonApi, hasDirectLoginPayload, readErrorMessage } from "@/lib/authRequest";
+import { callJsonApi, hasDirectLoginPayload, readErrorMessage } from "@/lib/auth/authRequest";
 
 type ConfirmOtpFormProps = {
   token: string;

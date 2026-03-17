@@ -1,4 +1,4 @@
-import { APIPostWithToken } from "@/lib/apiClient";
+import { APIPostWithToken } from "@/lib/http/apiClient";
 import type {
   UmsChangePasswordRequest,
   UmsChangePasswordResponse,

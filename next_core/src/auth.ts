@@ -2,8 +2,8 @@
 import Credentials from "next-auth/providers/credentials";
 import type { JWT } from "next-auth/jwt";
 import type { BackendLoginResponse } from "@/types";
-import { getJwtExp, isAccessTokenExpired } from "@/lib/authToken";
-import { APIPostWithToken } from "@/lib/apiClient";
+import { getJwtExp, isAccessTokenExpired } from "@/lib/auth/authToken";
+import { APIPostWithToken } from "@/lib/http/apiClient";
 
 type LoginResponseEnvelope = {
   data?: BackendLoginResponse;

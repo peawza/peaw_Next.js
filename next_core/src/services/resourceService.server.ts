@@ -1,5 +1,5 @@
 import "server-only";
-import { resolveBackendAuthToken } from "@/lib/microserviceAuth.server";
+import { resolveBackendAuthToken } from "@/lib/auth/microserviceAuth.server";
 import type {
   LocalizedResourceBundle,
   LocalizedResourcesDictionary,

@@ -2,7 +2,7 @@
 
 import axios, { type AxiosRequestConfig } from "axios";
 import { useEffect, useState } from "react";
-import axiosInstance from "@/lib/axios";
+import axiosInstance from "@/lib/http/axios";
 
 type UseFetchResult<T> = {
   data: T | null;

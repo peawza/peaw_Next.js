@@ -8,7 +8,7 @@ import {
   callJsonApi,
   hasDirectLoginPayload,
   readErrorMessage,
-} from "@/lib/authRequest";
+} from "@/lib/auth/authRequest";
 import type { LoginPayload } from "@/types";
 
 type LoginFormProps = {

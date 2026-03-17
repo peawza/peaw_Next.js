@@ -7,7 +7,7 @@ import {
   readBooleanByKeys,
   readErrorMessage,
   readStringByKeys,
-} from "@/lib/authRequest";
+} from "@/lib/auth/authRequest";
 
 type PreLoginRequestBody = {
   UserName?: string;

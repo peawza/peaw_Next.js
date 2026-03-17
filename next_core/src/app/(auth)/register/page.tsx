@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { isAccessTokenExpired } from "@/lib/authToken";
+import { isAccessTokenExpired } from "@/lib/auth/authToken";
 import { RegisterForm } from "@/components/features/auth/RegisterForm";
 
 export default async function RegisterPage() {

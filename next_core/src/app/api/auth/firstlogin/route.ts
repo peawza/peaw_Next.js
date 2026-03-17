@@ -4,7 +4,7 @@ import {
   isBackendExceptionPayload,
   parseJsonOrNull,
   readErrorMessage,
-} from "@/lib/authRequest";
+} from "@/lib/auth/authRequest";
 
 type FirstLoginRequestBody = {
   UserName?: string;

@@ -1,7 +1,7 @@
 ﻿import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { ConfirmOtpForm } from "@/components/features/auth/ConfirmOtpForm";
-import { isAccessTokenExpired } from "@/lib/authToken";
+import { isAccessTokenExpired } from "@/lib/auth/authToken";
 
 type ConfirmOtpPageProps = {
   searchParams: Promise<{

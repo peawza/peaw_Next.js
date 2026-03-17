@@ -1,5 +1,5 @@
 ﻿import { NextResponse } from "next/server";
-import { isBackendExceptionPayload, parseJsonOrNull, readErrorMessage } from "@/lib/authRequest";
+import { isBackendExceptionPayload, parseJsonOrNull, readErrorMessage } from "@/lib/auth/authRequest";
 
 type OtpResendRequestBody = {
   Token?: string;

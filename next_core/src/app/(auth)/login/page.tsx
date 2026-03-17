@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { LoginForm } from "@/components/features/auth/LoginForm";
-import { isAccessTokenExpired } from "@/lib/authToken";
+import { isAccessTokenExpired } from "@/lib/auth/authToken";
 
 export default async function LoginPage() {
   const session = await auth();
