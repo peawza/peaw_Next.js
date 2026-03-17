@@ -74,13 +74,31 @@ function isChangePasswordFailed(response: UmsChangePasswordResponse): boolean {
   return false;
 }
 
-function InfoItem({ label, value }: { label: string; value: string }) {
+function getInitials(firstName: string | null, lastName: string | null, userName: string): string {
+  if (firstName && lastName) {
+    return `${firstName[0]}${lastName[0]}`.toUpperCase();
+  }
+  if (firstName) {
+    return firstName.slice(0, 2).toUpperCase();
+  }
+  return userName.slice(0, 2).toUpperCase();
+}
+
+function InfoRow({ icon, label, value }: { icon: string; label: string; value: string }) {
   return (
-    <div className="space-y-1 rounded-md border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/60">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-        {label}
-      </p>
-      <p className="break-words text-sm text-slate-800 dark:text-slate-100">{value}</p>
+    <div className="flex items-start gap-3 py-3">
+      <span
+        className={`pi ${icon} mt-0.5 text-base text-indigo-500 dark:text-indigo-400`}
+        aria-hidden="true"
+      />
+      <div className="min-w-0 flex-1">
+        <p className="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">
+          {label}
+        </p>
+        <p className="mt-0.5 wrap-break-word text-sm font-medium text-slate-800 dark:text-slate-100">
+          {value}
+        </p>
+      </div>
     </div>
   );
 }
@@ -98,6 +116,7 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
   const [isSubmittingPassword, setIsSubmittingPassword] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [showPasswordSection, setShowPasswordSection] = useState(false);
 
   const accessToken = session?.accessToken ?? null;
   const yesLabel = t("COMMON.Yes", { defaultValue: "Yes" });
@@ -228,63 +247,11 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
     }
   };
 
-  const userInfoItems = useMemo(() => {
-    if (!userInfo) {
-      return [];
-    }
-
-    return [
-      // { label: "ID", value: toText(userInfo.id) },
-      // { label: "User Number", value: toText(userInfo.userNumber) },
-      {
-        label: t("UserInfo.UserName", { defaultValue: "User Name" }),
-        value: toText(userInfo.userName, yesLabel, noLabel),
-      },
-      {
-        label: t("UserInfo.FirstName", { defaultValue: "First Name" }),
-        value: toText(userInfo.firstName, yesLabel, noLabel),
-      },
-      {
-        label: t("UserInfo.LastName", { defaultValue: "Last Name" }),
-        value: toText(userInfo.lastName, yesLabel, noLabel),
-      },
-      {
-        label: t("UserInfo.DepartmentCode", { defaultValue: "Department Code" }),
-        value: toText(userInfo.departmentCode, yesLabel, noLabel),
-      },
-      {
-        label: t("UserInfo.PositionCode", { defaultValue: "Position Code" }),
-        value: toText(userInfo.positionCode, yesLabel, noLabel),
-      },
-      {
-        label: t("UserInfo.Email", { defaultValue: "Email" }),
-        value: toText(userInfo.email, yesLabel, noLabel),
-      },
-      {
-        label: t("UserInfo.PhoneNumber", { defaultValue: "Phone Number" }),
-        value: toText(userInfo.phoneNumber, yesLabel, noLabel),
-      },
-      // { label: "Language Code", value: toText(userInfo.languageCode) },
-      // { label: "First Login", value: toText(userInfo.firstLoginFlag) },
-      // { label: "Active", value: toText(userInfo.activeFlag) },
-      // { label: "System Admin", value: toText(userInfo.systemAdminFlag) },
-      // { label: "Create By", value: toText(userInfo.createBy) },
-      // { label: "Create Date", value: formatDateTime(userInfo.createDate) },
-      // { label: "Update By", value: toText(userInfo.updateBy) },
-      // { label: "Update Date", value: formatDateTime(userInfo.updateDate) },
-      {
-        label: t("UserInfo.LastLoginDate", { defaultValue: "Last Login Date" }),
-        value: formatDateTime(userInfo.lastLoginDate, i18n.language),
-      },
-      {
-        label: t("UserInfo.LastUpdatePasswordDate", { defaultValue: "Last Update Password Date" }),
-        value: formatDateTime(userInfo.lastUpdatePasswordDate, i18n.language),
-      },
-      // { label: "Active Date", value: formatDateTime(userInfo.activeDate) },
-      // { label: "Inactive Date", value: formatDateTime(userInfo.inActiveDate) },
-      // { label: "Remark", value: toText(userInfo.remark) },
-    ];
-  }, [i18n.language, noLabel, t, userInfo, yesLabel]);
+  const displayName = useMemo(() => {
+    if (!userInfo) return "";
+    const parts = [userInfo.firstName, userInfo.lastName].filter(Boolean);
+    return parts.length > 0 ? parts.join(" ") : userInfo.userName;
+  }, [userInfo]);
 
   if (isFetchingUserInfo) {
     return <LoadingSpinner />;
@@ -292,118 +259,244 @@ export function UserInfoScreen({ userId }: UserInfoScreenProps) {
 
   return (
     <section className="space-y-6">
-      <div className="space-y-4 rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
-        <div className="flex items-center justify-between gap-2">
-          <h1 className="text-3xl font-bold">{t("UserInfo.Title", { defaultValue: "User Info" })}</h1>
-          <Button
-            type="button"
-            label={t("COMMON.Refresh", { defaultValue: "Refresh" })}
-            className="p-button-outlined p-button-sm"
-            onClick={() => void loadUserInfo()}
-          />
+      {/* Error banner */}
+      {userInfoError ? (
+        <div className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 dark:border-red-900 dark:bg-red-950/30">
+          <span className="pi pi-exclamation-triangle text-red-500" aria-hidden="true" />
+          <p className="text-sm text-red-600 dark:text-red-300">{userInfoError}</p>
         </div>
+      ) : null}
 
-        {userInfoError ? (
-          <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300">
-            {userInfoError}
-          </p>
-        ) : null}
+      {userInfo ? (
+        <>
+          {/* Profile Header Card */}
+          <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+            {/* Gradient banner */}
+            <div className="relative h-32 bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500">
+              <button
+                type="button"
+                className="absolute right-4 top-4 flex items-center gap-2 rounded-xl border border-white/30 bg-white/20 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition-all hover:bg-white/30 hover:shadow-md active:scale-95"
+                onClick={() => void loadUserInfo()}
+              >
+                <span className="pi pi-refresh text-sm" aria-hidden="true" />
+                {t("COMMON.Refresh", { defaultValue: "Refresh" })}
+              </button>
+            </div>
 
-        {userInfo ? (
-          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-            {userInfoItems.map((item) => (
-              <InfoItem key={item.label} label={item.label} value={item.value} />
-            ))}
+            <div className="relative px-6 pb-6">
+              {/* Avatar */}
+              <div className="-mt-14 mb-4">
+                <div className="flex h-24 w-24 items-center justify-center rounded-2xl border-4 border-white bg-linear-to-br from-indigo-600 to-purple-600 text-2xl font-bold text-white shadow-lg dark:border-slate-900">
+                  {getInitials(userInfo.firstName, userInfo.lastName, userInfo.userName)}
+                </div>
+              </div>
+
+              {/* Name & username */}
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+                {displayName}
+              </h1>
+              {displayName !== userInfo.userName && (
+                <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+                  @{userInfo.userName}
+                </p>
+              )}
+
+              {/* Status badges */}
+              <div className="mt-3 flex flex-wrap gap-2">
+                {userInfo.activeFlag && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    {t("UserInfo.Active", { defaultValue: "Active" })}
+                  </span>
+                )}
+                {userInfo.systemAdminFlag && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                    <span className="pi pi-shield text-xs" aria-hidden="true" />
+                    {t("UserInfo.SystemAdmin", { defaultValue: "System Admin" })}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
-        ) : null}
-      </div>
 
-      <div className="space-y-4 rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-900">
-        <h2 className="text-2xl font-semibold">
-          {t("ChangePassword.Title", { defaultValue: "Change Password" })}
-        </h2>
-        <form className="grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleSubmitChangePassword}>
-          <PasswordField
-            label={t("ChangePassword.CurrentPassword", { defaultValue: "Current Password" })}
-            value={passwordForm.oldPassword}
-            onChange={(event) =>
-              setPasswordForm((prev) => ({
-                ...prev,
-                oldPassword: event.target.value,
-              }))
-            }
-            autoComplete="current-password"
-            required
-          />
-          <PasswordField
-            label={t("ChangePassword.ConfirmPassword", {
-              defaultValue: "Confirm Current Password",
-            })}
-            value={passwordForm.confirmOldPassword}
-            onChange={(event) =>
-              setPasswordForm((prev) => ({
-                ...prev,
-                confirmOldPassword: event.target.value,
-              }))
-            }
-            autoComplete="current-password"
-            required
-          />
-          <PasswordField
-            label={t("ChangePassword.NewPassword", { defaultValue: "New Password" })}
-            value={passwordForm.newPassword}
-            onChange={(event) =>
-              setPasswordForm((prev) => ({
-                ...prev,
-                newPassword: event.target.value,
-              }))
-            }
-            autoComplete="new-password"
-            required
-          />
-          <PasswordField
-            label={t("ChangePassword.ConfirmPassword", { defaultValue: "Confirm Password" })}
-            value={passwordForm.confirmNewPassword}
-            onChange={(event) =>
-              setPasswordForm((prev) => ({
-                ...prev,
-                confirmNewPassword: event.target.value,
-              }))
-            }
-            autoComplete="new-password"
-            required
-          />
+          {/* Info Cards Row */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Personal Info */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+              <div className="mb-4 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 dark:bg-indigo-900/40">
+                  <span className="pi pi-user text-sm text-indigo-600 dark:text-indigo-400" aria-hidden="true" />
+                </div>
+                <h2 className="text-base font-semibold text-slate-900 dark:text-white">
+                  {t("UserInfo.PersonalInfo", { defaultValue: "Personal Information" })}
+                </h2>
+              </div>
+              <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                <InfoRow
+                  icon="pi-id-card"
+                  label={t("UserInfo.FirstName", { defaultValue: "First Name" })}
+                  value={toText(userInfo.firstName, yesLabel, noLabel)}
+                />
+                <InfoRow
+                  icon="pi-id-card"
+                  label={t("UserInfo.LastName", { defaultValue: "Last Name" })}
+                  value={toText(userInfo.lastName, yesLabel, noLabel)}
+                />
+                <InfoRow
+                  icon="pi-envelope"
+                  label={t("UserInfo.Email", { defaultValue: "Email" })}
+                  value={toText(userInfo.email, yesLabel, noLabel)}
+                />
+                <InfoRow
+                  icon="pi-phone"
+                  label={t("UserInfo.PhoneNumber", { defaultValue: "Phone Number" })}
+                  value={toText(userInfo.phoneNumber, yesLabel, noLabel)}
+                />
+              </div>
+            </div>
 
-          {passwordError ? (
-            <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300 md:col-span-2">
-              {passwordError}
-            </p>
-          ) : null}
-
-          {passwordMessage ? (
-            <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-300 md:col-span-2">
-              {passwordMessage}
-            </p>
-          ) : null}
-
-          <div className="md:col-span-2">
-            <div className="grid grid-cols-12">
-              <div className="col-span-12 md:col-span-3 md:col-start-10">
-                <Button
-                  type="submit"
-                  label={
-                    isSubmittingPassword
-                      ? t("COMMON.Submitting", { defaultValue: "Submitting..." })
-                      : t("ChangePassword.Title", { defaultValue: "Change Password" })
-                  }
-                  className="w-full"
-                  disabled={isSubmittingPassword}
+            {/* Organization & Activity */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+              <div className="mb-4 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/40">
+                  <span className="pi pi-building text-sm text-purple-600 dark:text-purple-400" aria-hidden="true" />
+                </div>
+                <h2 className="text-base font-semibold text-slate-900 dark:text-white">
+                  {t("UserInfo.OrgAndActivity", { defaultValue: "Organization & Activity" })}
+                </h2>
+              </div>
+              <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                <InfoRow
+                  icon="pi-sitemap"
+                  label={t("UserInfo.DepartmentCode", { defaultValue: "Department Code" })}
+                  value={toText(userInfo.departmentCode, yesLabel, noLabel)}
+                />
+                <InfoRow
+                  icon="pi-briefcase"
+                  label={t("UserInfo.PositionCode", { defaultValue: "Position Code" })}
+                  value={toText(userInfo.positionCode, yesLabel, noLabel)}
+                />
+                <InfoRow
+                  icon="pi-sign-in"
+                  label={t("UserInfo.LastLoginDate", { defaultValue: "Last Login Date" })}
+                  value={formatDateTime(userInfo.lastLoginDate, i18n.language)}
+                />
+                <InfoRow
+                  icon="pi-key"
+                  label={t("UserInfo.LastUpdatePasswordDate", { defaultValue: "Last Update Password Date" })}
+                  value={formatDateTime(userInfo.lastUpdatePasswordDate, i18n.language)}
                 />
               </div>
             </div>
           </div>
-        </form>
-      </div>
+
+          {/* Change Password Section */}
+          <div className="rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+            <button
+              type="button"
+              className="flex w-full items-center justify-between px-6 py-4 text-left transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              onClick={() => setShowPasswordSection((prev) => !prev)}
+            >
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-100 dark:bg-rose-900/40">
+                  <span className="pi pi-lock text-sm text-rose-600 dark:text-rose-400" aria-hidden="true" />
+                </div>
+                <h2 className="text-base font-semibold text-slate-900 dark:text-white">
+                  {t("ChangePassword.Title", { defaultValue: "Change Password" })}
+                </h2>
+              </div>
+              <span
+                className={`pi ${showPasswordSection ? "pi-chevron-up" : "pi-chevron-down"} text-sm text-slate-400 transition-transform`}
+                aria-hidden="true"
+              />
+            </button>
+
+            {showPasswordSection && (
+              <div className="border-t border-slate-200 px-6 pb-6 pt-4 dark:border-slate-700">
+                <form className="grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleSubmitChangePassword}>
+                  <PasswordField
+                    label={t("ChangePassword.CurrentPassword", { defaultValue: "Current Password" })}
+                    value={passwordForm.oldPassword}
+                    onChange={(event) =>
+                      setPasswordForm((prev) => ({
+                        ...prev,
+                        oldPassword: event.target.value,
+                      }))
+                    }
+                    autoComplete="current-password"
+                    required
+                  />
+                  <PasswordField
+                    label={t("ChangePassword.ConfirmPassword", {
+                      defaultValue: "Confirm Current Password",
+                    })}
+                    value={passwordForm.confirmOldPassword}
+                    onChange={(event) =>
+                      setPasswordForm((prev) => ({
+                        ...prev,
+                        confirmOldPassword: event.target.value,
+                      }))
+                    }
+                    autoComplete="current-password"
+                    required
+                  />
+                  <PasswordField
+                    label={t("ChangePassword.NewPassword", { defaultValue: "New Password" })}
+                    value={passwordForm.newPassword}
+                    onChange={(event) =>
+                      setPasswordForm((prev) => ({
+                        ...prev,
+                        newPassword: event.target.value,
+                      }))
+                    }
+                    autoComplete="new-password"
+                    required
+                  />
+                  <PasswordField
+                    label={t("ChangePassword.ConfirmPassword", { defaultValue: "Confirm Password" })}
+                    value={passwordForm.confirmNewPassword}
+                    onChange={(event) =>
+                      setPasswordForm((prev) => ({
+                        ...prev,
+                        confirmNewPassword: event.target.value,
+                      }))
+                    }
+                    autoComplete="new-password"
+                    required
+                  />
+
+                  {passwordError ? (
+                    <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300 md:col-span-2">
+                      <span className="pi pi-times-circle" aria-hidden="true" />
+                      {passwordError}
+                    </div>
+                  ) : null}
+
+                  {passwordMessage ? (
+                    <div className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-300 md:col-span-2">
+                      <span className="pi pi-check-circle" aria-hidden="true" />
+                      {passwordMessage}
+                    </div>
+                  ) : null}
+
+                  <div className="flex justify-end md:col-span-2">
+                    <Button
+                      type="submit"
+                      icon={isSubmittingPassword ? "pi pi-spin pi-spinner" : "pi pi-save"}
+                      label={
+                        isSubmittingPassword
+                          ? t("COMMON.Submitting", { defaultValue: "Submitting..." })
+                          : t("ChangePassword.Title", { defaultValue: "Change Password" })
+                      }
+                      disabled={isSubmittingPassword}
+                    />
+                  </div>
+                </form>
+              </div>
+            )}
+          </div>
+        </>
+      ) : null}
     </section>
   );
 }

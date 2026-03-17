@@ -8,6 +8,8 @@ import { PermissionNames } from "@/lib/permissions";
 import { siteMapNodes, type SiteMapNode } from "@/lib/siteMap";
 import { useHasPermission } from "@/hooks/usePermission";
 
+const showExampleUI = process.env.NEXT_PUBLIC_SHOW_EXAMPLE_UI === "true";
+
 function hasMainMenu(node: SiteMapNode): boolean {
   return node.attributes["main-menu"] === true;
 }
@@ -227,6 +229,24 @@ export function Sidebar() {
         </nav>
 
         <div className="mt-4 border-t border-slate-200 pt-4 dark:border-slate-700">
+          {showExampleUI ? (
+            <div className="mb-4 space-y-1">
+              <p className="px-3 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                Dev Tools
+              </p>
+              <Link
+                href="/example-ui"
+                className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm ${
+                  isPathActive(pathname, "/example-ui")
+                    ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
+                    : "text-slate-600 hover:bg-amber-50 dark:text-slate-300 dark:hover:bg-amber-900/20"
+                }`}
+              >
+                <span className="pi pi-palette text-xs" />
+                Button Sample
+              </Link>
+            </div>
+          ) : null}
           <button
             type="button"
             onClick={() => signOut({ callbackUrl: "/login" })}
