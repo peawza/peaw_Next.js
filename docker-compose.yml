@@ -1,0 +1,48 @@
+services:
+
+  # ── Frontend (Next.js) ────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./fontend
+      dockerfile: Dockerfile
+      target: production
+    container_name: peaw_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
+    restart: unless-stopped
+    networks:
+      - peaw_network
+
+  # ── API Gateway (YARP – .NET 8) ───────────────────────────────────────────
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile.yarp
+    container_name: peaw_gateway
+    ports:
+      - "5000:8080"   # HTTP
+      - "5001:8081"   # HTTPS / management
+    depends_on:
+      - api_auth
+    restart: unless-stopped
+    networks:
+      - peaw_network
+
+  # ── Auth API (.NET 8) ─────────────────────────────────────────────────────
+  api_auth:
+    build:
+      context: ./backend/api.auth
+      dockerfile: Dockerfile.auth
+    container_name: peaw_api_auth
+    expose:
+      - "8080"
+      - "8081"
+    restart: unless-stopped
+    networks:
+      - peaw_network
+
+networks:
+  peaw_network:
+    driver: bridge

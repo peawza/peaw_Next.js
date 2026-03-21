@@ -1,8 +1,10 @@
 node_modules
 .next
+out
 .git
 .gitignore
 .vscode
+.idea
 coverage
 dist
 npm-debug.log*
@@ -12,3 +14,23 @@ pnpm-debug.log*
 .env
 .env.local
 .env.*.local
+!.env.example
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+docker/
+
+# OS
+*.DS_Store
+Thumbs.db
+
+# Tests
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Misc
+README.md
