@@ -1,0 +1,633 @@
+[
+  {
+    "ContainingType": "Authentication.Controllers.commonController",
+    "Method": "GetDepartmentsAsync",
+    "RelativePath": "common/departments",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.CommonModels\u002BCommon_Department_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.commonController",
+    "Method": "GetMiscellaneousModules",
+    "RelativePath": "common/miscellaneous/modules",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.CommonModels\u002BCommon_MiscellaneousModules_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.commonController",
+    "Method": "GetPositionsAsync",
+    "RelativePath": "common/positions",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.CommonModels\u002BCommon_Position_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.commonController",
+    "Method": "GetRolesAsync",
+    "RelativePath": "common/roles",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.CommonModels\u002BCommon_Role_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.OtpController",
+    "Method": "ResendOtp",
+    "RelativePath": "otp/resend-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Authentication.Models.OTP.OTPModels\u002BResendOtpRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.OtpController",
+    "Method": "SendOtp",
+    "RelativePath": "otp/send-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Authentication.Models.OTP.OTPModels\u002BSendOtpRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.OtpController",
+    "Method": "VerifyOtp",
+    "RelativePath": "otp/verify-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Authentication.Models.OTP.OTPModels\u002BVerifyOtpRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SSS010Controller",
+    "Method": "ConfirmResetPassword",
+    "RelativePath": "SSS010/ConfirmResetPassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "oUser",
+        "Type": "Authentication.Models.ConfirmResetPasswordDo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SSS010Controller",
+    "Method": "FistLogin",
+    "RelativePath": "SSS010/FirstLogin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.NewFolder.UMS010\u002BUMS010_FistLogin_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SSS010Controller",
+    "Method": "GetUserById",
+    "RelativePath": "SSS010/GetUserById",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "oUser",
+        "Type": "Authentication.Models.ConfirmResetPasswordDo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SSS010Controller",
+    "Method": "VerifyLogin",
+    "RelativePath": "SSS010/Login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "oUser",
+        "Type": "Authentication.Models.UserLoginDo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SSS010Controller",
+    "Method": "VerifyOtp",
+    "RelativePath": "SSS010/otpverifylogin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Authentication.Models.OTP.OTPModels\u002BVerifyOtpRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SSS010Controller",
+    "Method": "RefreshToken",
+    "RelativePath": "SSS010/RefreshToken",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "oToken",
+        "Type": "Authentication.Models.RefreshTokenDo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SSS010Controller",
+    "Method": "ResendOtp",
+    "RelativePath": "SSS010/resend-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Authentication.Models.OTP.OTPModels\u002BResendOtpRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SSS010Controller",
+    "Method": "ResetPassword",
+    "RelativePath": "SSS010/ResetPassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "oUser",
+        "Type": "Authentication.Models.UpdateUserDo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SystemController",
+    "Method": "getMessages",
+    "RelativePath": "system/getmessages",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SystemController",
+    "Method": "getResources",
+    "RelativePath": "system/getresources",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SystemController",
+    "Method": "GetScreen",
+    "RelativePath": "system/getscreen",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.MESScreenModel\u002BMESScreenCriteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SystemController",
+    "Method": "GetSiteMaps",
+    "RelativePath": "system/getsitemaps",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.MESScreenModel\u002BGetSiteMaps_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.SystemController",
+    "Method": "InsertImportLog",
+    "RelativePath": "system/insertimportlog",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Criteria",
+        "Type": "Authentication.Models.LogImportFileModel\u002BAPI_InsertImportLog_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS010Controller",
+    "Method": "AdminChangePassword",
+    "RelativePath": "ums010/admin/change/password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.NewFolder.UMS010\u002BUMS010_AdminChangePassword_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS010Controller",
+    "Method": "ChangePassword",
+    "RelativePath": "ums010/change/password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.NewFolder.UMS010\u002BUMS010_ChangePassword_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS010Controller",
+    "Method": "CreateUser",
+    "RelativePath": "ums010/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.NewFolder.UMS010\u002BUMS010_CreateUser_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS010Controller",
+    "Method": "ForgotPassword",
+    "RelativePath": "ums010/forgot/password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.NewFolder.UMS010\u002BUMS010_ForgotPassword_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS010Controller",
+    "Method": "GetUserById",
+    "RelativePath": "ums010/getby/id",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.NewFolder.UMS010\u002BGetUserID_Info_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS010Controller",
+    "Method": "Search",
+    "RelativePath": "ums010/search",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.NewFolder.UMS010\u002BUMS010_Search_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS010Controller",
+    "Method": "UpdateUser",
+    "RelativePath": "ums010/update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.NewFolder.UMS010\u002BUMS010_UpdateUser_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS020Controller",
+    "Method": "AddRole",
+    "RelativePath": "ums020/roles/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.UMS020.UMS020\u002BUMS020_AddRole_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS020Controller",
+    "Method": "DeleteRole",
+    "RelativePath": "ums020/roles/delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.UMS020.UMS020\u002BUMS020_DeleteRole_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS020Controller",
+    "Method": "SearchRole",
+    "RelativePath": "ums020/roles/search",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.UMS020.UMS020\u002BUMS020_SearchRole_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS020Controller",
+    "Method": "UpdateRole",
+    "RelativePath": "ums020/roles/update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.UMS020.UMS020\u002BUMS020_UpdateRole_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS020Controller",
+    "Method": "GetUserRoleMapping",
+    "RelativePath": "ums020/roles/usermapping/search",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "data",
+        "Type": "Authentication.Models.UMS020.UMS020\u002BUMS020_GetUserRoleMapping_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS020Controller",
+    "Method": "AddUsersToRole",
+    "RelativePath": "ums020/roles/users/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "data",
+        "Type": "Authentication.Models.UMS020.UMS020\u002BUMS020_UserRoleMapping_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS030Controller",
+    "Method": "getModules",
+    "RelativePath": "ums030/getmodules",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.UMS030.UMS030\u002BUMS030_GetModule_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS030Controller",
+    "Method": "GetRoles",
+    "RelativePath": "ums030/getrole",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.UMS030.UMS030\u002BUMS030_GetRoles_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS030Controller",
+    "Method": "ListScreenFunctions",
+    "RelativePath": "ums030/list/functions",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS030Controller",
+    "Method": "ListByUserGroup",
+    "RelativePath": "ums030/list/user-group",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "criteria",
+        "Type": "Authentication.Models.UMS030.UMS030\u002BUMS030_ListByUserGroup_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Controllers.UMS030Controller",
+    "Method": "UpdatePermissions",
+    "RelativePath": "ums030/update/permissions",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "permissions",
+        "Type": "Authentication.Models.UMS030.UMS030\u002BUMS030_UpdatePermission_Criteria",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BackofficeAdminAPI.Controllers.WeatherForecastController",
+    "Method": "Get",
+    "RelativePath": "WeatherForecast",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[BackofficeAdminAPI.Controllers.WeatherForecastController\u002BWeatherForecast, Authentication, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "EndpointName": "GetWeatherForecast"
+  },
+  {
+    "ContainingType": "BackofficeAdminAPI.Controllers.WeatherForecastController",
+    "Method": "PublicEndpoint",
+    "RelativePath": "WeatherForecast/public",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BackofficeAdminAPI.Controllers.WeatherForecastController",
+    "Method": "Test",
+    "RelativePath": "WeatherForecast/test",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

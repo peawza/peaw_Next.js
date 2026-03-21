@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace WarehouseSQLDB.Models.Tables;
+
+public partial class TbmPackage
+{
+    public int PackageId { get; set; }
+
+    public string PackageCode { get; set; } = null!;
+
+    public string? PackageName { get; set; }
+
+    public string? Remark { get; set; }
+
+    public int DeleteFlag { get; set; }
+
+    public DateTime? CreateDate { get; set; }
+
+    public string? CreateUser { get; set; }
+
+    public DateTime? UpdateDate { get; set; }
+
+    public string? UpdateUser { get; set; }
+}

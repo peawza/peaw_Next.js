@@ -1,0 +1,12 @@
+﻿
+
+-- Scaffold-DbContext
+
+dotnet ef dbcontext scaffold "Server=SQLPOOL03SVR\RUBIX;Database=UACJ-WMS;User Id=rubix;Password=Sa@Dmin;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models/Tables --context WarehouseDbContext --context-dir . --force --no-onconfiguring
+
+
+
+
+
+-- ใช้อันนี้ในการ get type db
+EXEC sp_describe_first_result_set  N'EXEC dbo.sp_UACJ_TMS_QueueManagement_Getdatda ' ;

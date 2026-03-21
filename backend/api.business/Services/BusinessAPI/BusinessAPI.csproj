@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>8767fffb-8234-4dd1-8fb3-89df1a5cee10</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ClosedXML" Version="0.105.0-rc" />
+		<PackageReference Include="Mapster" Version="7.4.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+		<PackageReference Include="SQLDBEntityNotifier" Version="2.0.0" />
+		<PackageReference Include="SqlTableDependency" Version="8.5.8" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+	</ItemGroup>
+
+ 
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DataBase\ProductionOperationPostgreSQLDB\BusinessSQLDB.csproj" />
+    <ProjectReference Include="..\..\DataBase\WarehouseSQLDB\WarehouseSQLDB.csproj" />
+    <ProjectReference Include="..\..\Libraries\Utils\utils.core.mssql.csproj" />
+  
+  </ItemGroup>
+
+</Project>

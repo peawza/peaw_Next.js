@@ -1,0 +1,14 @@
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\bin\Release\net8.0\ApplicationDB.deps.json
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\bin\Release\net8.0\ApplicationDB.runtimeconfig.json
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\bin\Release\net8.0\ApplicationDB.dll
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\bin\Release\net8.0\ApplicationDB.pdb
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\obj\Release\net8.0\ApplicationDB.csproj.AssemblyReference.cache
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\obj\Release\net8.0\ApplicationDB.GeneratedMSBuildEditorConfig.editorconfig
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\obj\Release\net8.0\ApplicationDB.AssemblyInfoInputs.cache
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\obj\Release\net8.0\ApplicationDB.AssemblyInfo.cs
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\obj\Release\net8.0\ApplicationDB.csproj.CoreCompileInputs.cache
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\obj\Release\net8.0\ApplicationDB.dll
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\obj\Release\net8.0\refint\ApplicationDB.dll
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\obj\Release\net8.0\ApplicationDB.pdb
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\obj\Release\net8.0\ApplicationDB.genruntimeconfig.cache
+G:\gitlab_csi\uacj-tms\api.auth\Database\ApplicationDB\obj\Release\net8.0\ref\ApplicationDB.dll

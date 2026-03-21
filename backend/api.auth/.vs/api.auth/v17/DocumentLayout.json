@@ -1,0 +1,252 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "G:\\gitlab_csi\\uacj-tms\\api.auth\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\services\\authentication\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|solutionrelative:services\\authentication\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\services\\authentication\\repositories\\otprepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|solutionrelative:services\\authentication\\repositories\\otprepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\database\\applicationdb\\systemdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|solutionrelative:database\\applicationdb\\systemdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\services\\authentication\\setuphttpclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|solutionrelative:services\\authentication\\setuphttpclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\services\\authentication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|solutionrelative:services\\authentication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\database\\applicationdb\\models\\system\\ts_importlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|solutionrelative:database\\applicationdb\\models\\system\\ts_importlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\database\\applicationdb\\models\\system\\ts_urlconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|solutionrelative:database\\applicationdb\\models\\system\\ts_urlconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\services\\authentication\\controllers\\sss010controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|solutionrelative:services\\authentication\\controllers\\sss010controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\database\\applicationdb\\models\\application\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|solutionrelative:database\\applicationdb\\models\\application\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\services\\authentication\\repositories\\ums010repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|solutionrelative:services\\authentication\\repositories\\ums010repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\services\\authentication\\services\\ums010service.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|solutionrelative:services\\authentication\\services\\ums010service.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\services\\authentication\\controllers\\ums010controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7CBD8D9-4F30-E720-C29C-B93038AE4696}|Services\\Authentication\\Authentication.csproj|solutionrelative:services\\authentication\\controllers\\ums010controller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\database\\applicationdb\\models\\application\\tb_userinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|solutionrelative:database\\applicationdb\\models\\application\\tb_userinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|g:\\gitlab_csi\\uacj-tms\\api.auth\\database\\applicationdb\\models\\application\\tb_userrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{411CF6D6-AF4C-1856-D627-098B630E9E2A}|Database\\ApplicationDB\\ApplicationDB.csproj|solutionrelative:database\\applicationdb\\models\\application\\tb_userrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\appsettings.json",
+              "RelativeDocumentMoniker": "Services\\Authentication\\appsettings.json",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\appsettings.json",
+              "RelativeToolTip": "Services\\Authentication\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAB5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-13T03:34:40.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Program.cs",
+              "RelativeDocumentMoniker": "Services\\Authentication\\Program.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Program.cs",
+              "RelativeToolTip": "Services\\Authentication\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T16:31:15.042Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SetupHttpClient.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\SetupHttpClient.cs",
+              "RelativeDocumentMoniker": "Services\\Authentication\\SetupHttpClient.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\SetupHttpClient.cs",
+              "RelativeToolTip": "Services\\Authentication\\SetupHttpClient.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAQwCMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T16:30:57.528Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ts_URLConfig.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\Models\\System\\ts_URLConfig.cs",
+              "RelativeDocumentMoniker": "Database\\ApplicationDB\\Models\\System\\ts_URLConfig.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\Models\\System\\ts_URLConfig.cs",
+              "RelativeToolTip": "Database\\ApplicationDB\\Models\\System\\ts_URLConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T16:25:31.839Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ts_ImportLog.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\Models\\System\\ts_ImportLog.cs",
+              "RelativeDocumentMoniker": "Database\\ApplicationDB\\Models\\System\\ts_ImportLog.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\Models\\System\\ts_ImportLog.cs",
+              "RelativeToolTip": "Database\\ApplicationDB\\Models\\System\\ts_ImportLog.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T16:25:12.83Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OtpRepository.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Repositories\\OtpRepository.cs",
+              "RelativeDocumentMoniker": "Services\\Authentication\\Repositories\\OtpRepository.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Repositories\\OtpRepository.cs",
+              "RelativeToolTip": "Services\\Authentication\\Repositories\\OtpRepository.cs",
+              "ViewState": "AgIAAOsAAAAAAAAAAAAjwPQAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T16:22:02.517Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SystemDbContext.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\SystemDbContext.cs",
+              "RelativeDocumentMoniker": "Database\\ApplicationDB\\SystemDbContext.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\SystemDbContext.cs",
+              "RelativeToolTip": "Database\\ApplicationDB\\SystemDbContext.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAuwBQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T16:01:31.007Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "UMS010Service.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Services\\UMS010Service.cs",
+              "RelativeDocumentMoniker": "Services\\Authentication\\Services\\UMS010Service.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Services\\UMS010Service.cs",
+              "RelativeToolTip": "Services\\Authentication\\Services\\UMS010Service.cs",
+              "ViewState": "AgIAAIsAAAAAAAAAAAAAAKAAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T15:50:39.934Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\Models\\Application\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "Database\\ApplicationDB\\Models\\Application\\ApplicationUser.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\Models\\Application\\ApplicationUser.cs",
+              "RelativeToolTip": "Database\\ApplicationDB\\Models\\Application\\ApplicationUser.cs",
+              "ViewState": "AgIAADYAAAAAAAAAAAAcwDkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T15:37:36.269Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "tb_UserInfo.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\Models\\Application\\tb_UserInfo.cs",
+              "RelativeDocumentMoniker": "Database\\ApplicationDB\\Models\\Application\\tb_UserInfo.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\Models\\Application\\tb_UserInfo.cs",
+              "RelativeToolTip": "Database\\ApplicationDB\\Models\\Application\\tb_UserInfo.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T15:37:31.978Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "tb_UserRole.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\Models\\Application\\tb_UserRole.cs",
+              "RelativeDocumentMoniker": "Database\\ApplicationDB\\Models\\Application\\tb_UserRole.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Database\\ApplicationDB\\Models\\Application\\tb_UserRole.cs",
+              "RelativeToolTip": "Database\\ApplicationDB\\Models\\Application\\tb_UserRole.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T15:37:30.553Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "UMS010Controller.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Controllers\\UMS010Controller.cs",
+              "RelativeDocumentMoniker": "Services\\Authentication\\Controllers\\UMS010Controller.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Controllers\\UMS010Controller.cs",
+              "RelativeToolTip": "Services\\Authentication\\Controllers\\UMS010Controller.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAwwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T09:12:59.999Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UMS010Repository.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Repositories\\UMS010Repository.cs",
+              "RelativeDocumentMoniker": "Services\\Authentication\\Repositories\\UMS010Repository.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Repositories\\UMS010Repository.cs",
+              "RelativeToolTip": "Services\\Authentication\\Repositories\\UMS010Repository.cs",
+              "ViewState": "AgIAAKoAAAAAAAAAAAAqwCABAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-12T09:13:00.013Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SSS010Controller.cs",
+              "DocumentMoniker": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Controllers\\SSS010Controller.cs",
+              "RelativeDocumentMoniker": "Services\\Authentication\\Controllers\\SSS010Controller.cs",
+              "ToolTip": "G:\\gitlab_csi\\uacj-tms\\api.auth\\Services\\Authentication\\Controllers\\SSS010Controller.cs",
+              "RelativeToolTip": "Services\\Authentication\\Controllers\\SSS010Controller.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAAAWwFUAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-13T09:49:19.272Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

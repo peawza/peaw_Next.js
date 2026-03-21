@@ -34,3 +34,53 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# -----------------------------
+# C# / .NET
+# -----------------------------
+
+# Build results
+**/[Bb]in/
+**/[Oo]bj/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono / VS Code local settings
+*.userprefs
+
+# Debug and profiling artifacts
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+!**/packages/build/
+!**/packages/repositories.config
+
+# Publish output
+publish/
+
+# Azure / local tooling
+PublishScripts/
+appsettings.*.local.json
+
+# Test result files
+TestResult*/
+*.trx
+
+# Generated files
+Generated\ Files/
