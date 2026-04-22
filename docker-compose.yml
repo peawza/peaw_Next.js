@@ -43,6 +43,19 @@ services:
     networks:
       - peaw_network
 
+  # ── Business API (.NET 8) ─────────────────────────────────────────────────
+  api_business:
+    build:
+      context: ./backend/api.business
+      dockerfile: Dockerfile
+    container_name: peaw_api_business
+    expose:
+      - "8080"
+      - "8081"
+    restart: unless-stopped
+    networks:
+      - peaw_network
+
 networks:
   peaw_network:
     driver: bridge
